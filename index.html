@@ -1,99 +1,66 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-  <meta charset="UTF-8">
-  <title>Watch Party z Kamerką</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-      background: url('https://i.imgur.com/0Z5Q1ZL.jpeg') no-repeat center center fixed;
-      background-size: cover;
-      font-family: Arial, sans-serif;
-      display: flex;
+
+import React, { useState } from "react";
+
+export default function Home() {
+  const [videoSrc, setVideoSrc] = useState(null);
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const videoURL = URL.createObjectURL(file);
+      setVideoSrc(videoURL);
     }
+  };
 
-    #video {
-      flex-grow: 1;
-      height: 100vh;
-    }
+  return (
+    <main className="min-h-screen bg-gray-900 text-white p-4 flex flex-col gap-4">
+      <h1 className="text-3xl font-bold text-center">Wspólne oglądanie z shyguy_LIVE</h1>
 
-    #chat {
-      width: 350px;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.7);
-      border-left: 2px solid rgba(255, 255, 255, 0.1);
-    }
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Odtwarzacz lokalnych plików */}
+        <div className="bg-gray-800 p-4 rounded-2xl shadow">
+          <h2 className="text-xl mb-2 font-semibold">Wgraj swój plik wideo</h2>
+          <input
+            type="file"
+            accept="video/*"
+            onChange={handleFileUpload}
+            className="mb-4 text-black"
+          />
+          {videoSrc && (
+            <video
+              src={videoSrc}
+              controls
+              className="w-full rounded-xl border border-gray-700"
+            />
+          )}
+        </div>
 
-    #chat iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
+        {/* Stream Twitcha */}
+        <div className="bg-gray-800 p-4 rounded-2xl shadow">
+          <h2 className="text-xl mb-2 font-semibold">Stream shyguy_LIVE</h2>
+          <div className="aspect-w-16 aspect-h-9">
+            <iframe
+              src="https://player.twitch.tv/?channel=shyguy_LIVE&parent=localhost"
+              height="100%"
+              width="100%"
+              allowFullScreen
+              frameBorder="0"
+              className="w-full h-72 rounded-xl"
+            ></iframe>
+          </div>
+        </div>
+      </section>
 
-    #twitch-cam {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      width: 200px;
-      height: 120px;
-      z-index: 10;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      background-color: rgba(0, 0, 0, 0.7);
-      resize: both;
-      overflow: hidden;
-    }
-
-    #twitch-cam iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Główne wideo -->
-  <video id="video" controls autoplay>
-    <source src="https://files.catbox.moe/9df1cy.mp4" type="video/mp4">
-    Twoja przeglądarka nie obsługuje wideo HTML5.
-  </video>
-
-  <!-- Czat Twitch -->
-  <div id="chat">
-    <iframe src="https://www.twitch.tv/embed/shyguy_LIVE/chat?parent=shyguy-watch-party.vercel.app"></iframe>
-  </div>
-
-  <!-- Kamerka Twitch -->
-  <div id="twitch-cam">
-    <iframe src="https://player.twitch.tv/?channel=shyguy_LIVE&parent=shyguy-watch-party.vercel.app&autoplay=true&muted=true"></iframe>
-  </div>
-
-  <script>
-    // Przeciąganie kamerki
-    const cam = document.getElementById('twitch-cam');
-    let isDragging = false;
-    let offsetX, offsetY;
-
-    cam.addEventListener('mousedown', (e) => {
-      if (e.target.tagName !== 'IFRAME') {
-        isDragging = true;
-        offsetX = e.clientX - cam.offsetLeft;
-        offsetY = e.clientY - cam.offsetTop;
-      }
-    });
-
-    document.addEventListener('mousemove', (e) => {
-      if (isDragging) {
-        cam.style.left = `${e.clientX - offsetX}px`;
-        cam.style.top = `${e.clientY - offsetY}px`;
-      }
-    });
-
-    document.addEventListener('mouseup', () => isDragging = false);
-  </script>
-
-</body>
-</html>
+      {/* Czat Twitcha */}
+      <section className="bg-gray-800 p-4 rounded-2xl shadow">
+        <h2 className="text-xl mb-2 font-semibold">Czat Twitcha</h2>
+        <iframe
+          src="https://www.twitch.tv/embed/shyguy_LIVE/chat?parent=localhost"
+          height="400"
+          width="100%"
+          className="rounded-xl border border-gray-700"
+        ></iframe>
+      </section>
+    </main>
+  );
+}
