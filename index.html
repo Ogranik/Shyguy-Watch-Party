@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Watch Party Ogranik</title>
+  <title>Watch Party Ayaya</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
   <style>
@@ -12,6 +12,9 @@
       display: grid;
       grid-template-columns: 3fr 1fr;
       height: 100vh;
+      background: url('https://i.imgur.com/0Z5Q1ZL.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
     }
     .video-container, .chat {
       height: 100%;
@@ -35,22 +38,28 @@
       margin-top: 10px;
       cursor: pointer;
     }
+    input[type="text"] {
+      width: 300px;
+      padding: 5px;
+    }
   </style>
 </head>
 <body>
   <div class="video-container">
     <div class="controls">
       <div id="countdown">Start za: -</div>
-      <button onclick="startWatchParty()">Start seansu</button>
+      <button onclick="startWatchParty()">Start seansu</button><br>
+      <input type="text" id="videoUrl" placeholder="Wklej link do filmu .mp4">
+      <button onclick="changeVideo()">Zmień film</button>
     </div>
     <video id="videoPlayer" controls>
-      <source src="https://files.catbox.moe/9df1cy.mp4" type="video/mp4">
+      <source id="videoSource" src="https://files.catbox.moe/9df1cy.mp4" type="video/mp4">
       Twoja przeglądarka nie obsługuje wideo HTML5.
     </video>
   </div>
   <div class="chat">
     <iframe
-      src="https://www.twitch.tv/embed/shyguy_LIVE/chat?parent=shyguy-watch-party.vercel.app"
+      src="https://www.twitch.tv/embed/TWOJ_NICK/chat?parent=watch-party.vercel.app"
       height="100%"
       width="100%">
     </iframe>
@@ -73,10 +82,22 @@
 
     const countdownDiv = document.getElementById('countdown');
     const video = document.getElementById('videoPlayer');
+    const videoSource = document.getElementById('videoSource');
+    const videoUrlInput = document.getElementById('videoUrl');
 
     function startWatchParty() {
       const startTime = Date.now() + 10000; // za 10 sekund
       db.ref('watchparty/startTime').set(startTime);
+    }
+
+    function changeVideo() {
+      const newUrl = videoUrlInput.value;
+      if (newUrl.endsWith('.mp4')) {
+        videoSource.src = newUrl;
+        video.load();
+      } else {
+        alert("Podaj prawidłowy link do pliku .mp4");
+      }
     }
 
     db.ref('watchparty/startTime').on('value', snapshot => {
