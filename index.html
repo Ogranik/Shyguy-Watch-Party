@@ -5,24 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Oglądaj z shyguy_LIVE</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      background-color: black;
-      color: white;
-      font-family: sans-serif;
       margin: 0;
       padding: 0;
+      font-family: sans-serif;
       height: 100vh;
       overflow: hidden;
+    }
+
+    #videoBackground {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      background: black;
+    }
+
+    .overlay {
       display: flex;
       flex-direction: row;
+      height: 100vh;
+      width: 100%;
     }
 
     .left-panel {
       flex: 3;
       display: flex;
       flex-direction: column;
+      justify-content: flex-end;
       padding: 20px;
-      background-color: black;
+      color: white;
     }
 
     .right-panel {
@@ -31,15 +50,8 @@
       flex-direction: column;
       background-color: #1a1a1a;
       padding: 10px;
+      z-index: 1;
       box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
-    }
-
-    video {
-      width: 100%;
-      height: 80%;
-      border-radius: 10px;
-      margin-top: 10px;
-      background-color: black;
     }
 
     iframe {
@@ -50,7 +62,10 @@
     }
 
     .file-upload {
-      margin-top: auto;
+      margin-top: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 15px;
+      border-radius: 10px;
     }
 
     input[type="file"] {
@@ -59,42 +74,47 @@
       padding: 5px;
     }
 
-    h1, h2 {
-      margin: 0 0 10px 0;
+    h2 {
+      margin-top: 0;
     }
   </style>
 </head>
 <body>
-  <div class="left-panel">
-    <video id="videoPlayer" controls style="display:none;"></video>
-    <div class="file-upload">
-      <h2>📁 Wgraj swój plik</h2>
-      <input type="file" accept="video/*" id="fileInput" />
-    </div>
-  </div>
+  <!-- Wideo jako tło -->
+  <video id="videoBackground" autoplay muted loop style="display: none;"></video>
 
-  <div class="right-panel">
-    <iframe
-      src="https://www.twitch.tv/embed/shyguy_LIVE/chat?parent=localhost"
-      style="height: 50%;">
-    </iframe>
-    <iframe
-      src="https://player.twitch.tv/?channel=shyguy_LIVE&parent=localhost"
-      style="height: 30%;"
-      allowfullscreen>
-    </iframe>
+  <!-- Nakładka z panelem i czatem -->
+  <div class="overlay">
+    <div class="left-panel">
+      <div class="file-upload">
+        <h2>📁 Wgraj swój plik</h2>
+        <input type="file" accept="video/*" id="fileInput" />
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <iframe
+        src="https://www.twitch.tv/embed/shyguy_LIVE/chat?parent=localhost"
+        style="height: 50%;">
+      </iframe>
+      <iframe
+        src="https://player.twitch.tv/?channel=shyguy_LIVE&parent=localhost"
+        style="height: 30%;"
+        allowfullscreen>
+      </iframe>
+    </div>
   </div>
 
   <script>
     const fileInput = document.getElementById('fileInput');
-    const videoPlayer = document.getElementById('videoPlayer');
+    const videoBackground = document.getElementById('videoBackground');
 
     fileInput.addEventListener('change', function () {
       const file = this.files[0];
       if (file) {
         const url = URL.createObjectURL(file);
-        videoPlayer.src = url;
-        videoPlayer.style.display = 'block';
+        videoBackground.src = url;
+        videoBackground.style.display = 'block';
       }
     });
   </script>
