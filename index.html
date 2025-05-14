@@ -12,25 +12,27 @@
       margin: 0;
       padding: 0;
       height: 100vh;
-      overflow: hidden;
+      overflow: auto;
       display: flex;
       flex-direction: row;
     }
 
     .left-panel {
-      flex: 2;
+      flex: 2.5;
       display: flex;
       flex-direction: column;
       padding: 20px;
+      min-height: 100vh;
     }
 
     .right-panel {
-      flex: 1;
+      flex: 0.8;
       display: flex;
       flex-direction: column;
       background-color: #1a1a1a;
       padding: 10px;
       box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+      min-height: 100vh;
     }
 
     video, iframe {
@@ -39,8 +41,11 @@
       margin-top: 10px;
     }
 
+    .file-upload {
+      margin-top: 40px;
+    }
+
     input[type="file"] {
-      margin: 10px 0;
       background: white;
       color: black;
       padding: 5px;
@@ -54,8 +59,11 @@
 <body>
   <div class="left-panel">
     <h1>🎬 Wspólne oglądanie z shyguy_LIVE</h1>
-    <input type="file" accept="video/*" id="fileInput" />
     <video id="videoPlayer" controls style="display:none; height: 100%;"></video>
+    <div class="file-upload">
+      <h2>📁 Wgraj swój plik</h2>
+      <input type="file" accept="video/*" id="fileInput" />
+    </div>
   </div>
 
   <div class="right-panel">
