@@ -1,48 +1,64 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Shyguy watch party</title>
+  <title>Watch Party z Kamerką</title>
   <style>
     body {
-      display: grid;
-      grid-template-columns: 3fr 1fr;
-      height: 100vh;
       margin: 0;
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 2fr 1fr;
+      grid-template-areas:
+        "video chat"
+        "stream chat";
+      height: 100vh;
+      background: url('https://i.imgur.com/0Z5Q1ZL.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+    }
+    .video-container {
+      grid-area: video;
+    }
+    .chat {
+      grid-area: chat;
+      border-left: 2px solid rgba(255, 255, 255, 0.1);
+    }
+    .stream {
+      grid-area: stream;
+      padding: 10px;
     }
     iframe, video {
       width: 100%;
       height: 100%;
       border: none;
     }
-    .video {
-      background: black;
-    }
-    .chat {
-      border-left: 2px solid #ccc;
-    }
   </style>
 </head>
 <body>
+  <div class="video-container">
+    <video controls>
+      <source src="https://files.catbox.moe/9df1cy.mp4" type="video/mp4">
+      Twoja przeglądarka nie obsługuje wideo HTML5.
+    </video>
+  </div>
 
-  <!-- Sekcja wideo -->
-  <div class="video">
-    <!-- Możesz też użyć <video controls src="..."> do lokalnych filmów -->
-    <iframe 
-      src="https://www.youtube.com/embed/wnDPJS8seWU?autoplay=1" 
+  <div class="chat">
+    <iframe
+      src="https://www.twitch.tv/embed/TWOJ_NICK/chat?parent=twojadomena.vercel.app"
       allowfullscreen>
     </iframe>
   </div>
 
-  <!-- Czat Twitch -->
-  <div class="chat">
+  <div class="stream">
     <iframe
-      src="https://www.twitch.tv/embed/shyguy_LIVE/chat?parent=shyguy-watch-party.vercel.app"
-      height="300"
-      width="500">
+      src="https://player.twitch.tv/?channel=TWOJ_NICK&parent=twojadomena.vercel.app"
+      allowfullscreen>
+      height="100%"
+      width="100%">
     </iframe>
   </div>
-
 </body>
 </html>
