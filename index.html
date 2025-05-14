@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Oglądaj z shyguy_LIVE</title>
+  <title>shyguy_LIVE</title>
   <style>
     * {
       box-sizing: border-box;
@@ -27,17 +27,18 @@
 
     .left {
       flex: 3;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      padding: 20px;
+      justify-content: center;
     }
 
     video {
       width: 100%;
       height: 100%;
-      max-height: calc(100vh - 80px);
+      max-height: calc(100vh - 40px);
       border-radius: 10px;
-      background-color: black;
+      background: black;
     }
 
     .right {
@@ -45,50 +46,61 @@
       display: flex;
       flex-direction: column;
       padding: 10px;
-      gap: 10px;
       background-color: #1a1a1a;
-    }
-
-    .iframe-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
+      gap: 10px;
     }
 
     iframe {
       width: 100%;
-      height: 100%;
       border-radius: 10px;
       border: none;
       background: #000;
     }
 
-    /* Ukrycie inputa poza ekranem */
-    #fileInput {
-      position: absolute;
-      left: -9999px;
+    .camera {
+      height: 40%;
+    }
+
+    .chat {
+      height: 40%;
+    }
+
+    .upload {
+      height: 20%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upload input[type="file"] {
+      background: white;
+      color: black;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <input type="file" accept="video/*" id="fileInput" />
-
   <div class="main">
     <div class="left">
       <video id="videoPlayer" controls style="display: none;"></video>
     </div>
 
     <div class="right">
-      <div class="iframe-container" style="flex: 0.5;">
+      <div class="camera">
         <iframe
           src="https://player.twitch.tv/?channel=shyguy_LIVE&parent=localhost"
           allowfullscreen>
         </iframe>
       </div>
-      <div class="iframe-container" style="flex: 0.5;">
+      <div class="chat">
         <iframe
           src="https://www.twitch.tv/embed/shyguy_LIVE/chat?parent=localhost">
         </iframe>
+      </div>
+      <div class="upload">
+        <input type="file" accept="video/*" id="fileInput" />
       </div>
     </div>
   </div>
@@ -103,13 +115,6 @@
         const url = URL.createObjectURL(file);
         videoPlayer.src = url;
         videoPlayer.style.display = 'block';
-      }
-    });
-
-    // Skrót klawiszowy do wywołania wyboru pliku (np. "V")
-    document.addEventListener('keydown', (e) => {
-      if (e.key.toLowerCase() === 'v') {
-        fileInput.click();
       }
     });
   </script>
